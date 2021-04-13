@@ -1,0 +1,154 @@
+1.actor
+2.add
+3.category
+4.city
+5.country
+6.customer
+7.film
+8.film_actor
+9.film_category
+A.film_text
+B.invent
+C.Lang
+D.Payment
+E.Rental
+F.Staff
+11.Store
+
+(OPS) ¿Deberíamos abrir otra tienda?
+
+¿Qué tienda tiene mayor carga?
+2.address -> city -> country (dim)
+3.category
+7.film
+B.invent
+C.Lang
+E.Rental
+11.Store
+
+¿El staff se centra en su tienda?
+B.invent
+E.Rental
+F.Staff
+11.Store
+
+(Comercial) ¿Qué genera mayor ganancias?
+
+¿De qué lugar piden más, nos genera más y de qué categoría e idioma?
+2.address -> city -> country (dim)
+3.category
+7.film
+B.invent
+C.Lang
+D.Payment
+11.Store
+
+
+Modelo:{[
+	fact_rentals:{
+		// OPS: invent+rental+store --- Comercial: film+pay+store
+		rental: rental_id
+		0. date_id
+		staff: a. staff_id
+		invent:{ 
+			store: b. store_id
+			film: c. film_id
+			+?: Cantidad de filmes rentadas
+		}
+		customer: d. customer_id
+		transaction:[rental_date, return_date, payment_day]
+		
+		r.rental_id, [film-inventory_id], r.customer_id, DATE(rental_date), DATE(return_date), [staff_id-CONCAT(first_name, last_name)], p.amount, DATE(payment_date)
+		
+		film_id:
+			rental.inventory_id = inventory.inventory_id
+		store_id:
+			rental.inventory_id = inventory.inventory_id
+		customer_id:
+			payment.customer_id || rental.customer_id
+		date_id:
+			(YEAR(rental_date)*1000)+MONTH(rental_date)
+				|| (YEAR(return_date)*1000)+MONTH(return_date)
+				|| (YEAR(payment_date)*1000)+MONTH(payment_date)
+		staff_name:
+			CONCAT(first_name, " ", last_name)
+			payment.staff_id || rental.staff_id
+				= staff.staff_id
+		transaction:
+			rental || return || payment
+		amount:
+			payment.amount
+		
+		SELECT CONCAT(r.rental_id,'R') AS rental_id, i.film_id, i.store_id, r.customer_id, (YEAR(r.rental_date)*10000) + (MONTH(r.rental_date)*100) + DAY(r.rental_date) AS date_id, CONCAT(s.first_name, ' ', s.last_name) AS staff_name, "rental" AS `transaction`, NULL AS amount
+			FROM rental r
+			INNER JOIN inventory i ON r.inventory_id = i.inventory_id
+			INNER JOIN staff s ON r.staff_id = s.staff_id
+		UNION ALL
+		SELECT CONCAT(r.rental_id,'U') AS rental_id, i.film_id, i.store_id, r.customer_id, (YEAR(r.return_date)*10000) + (MONTH(r.return_date)*100) + DAY(r.return_date) AS date_id, CONCAT(s.first_name, ' ', s.last_name) AS staff_name, "return" AS `transaction`, NULL AS amount
+			FROM rental r
+			INNER JOIN inventory i ON r.inventory_id = i.inventory_id
+			INNER JOIN staff s ON r.staff_id = s.staff_id
+		UNION ALL
+		SELECT CONCAT(r.rental_id,'P') AS rental_id, i.film_id, i.store_id, p.customer_id, (YEAR(p.payment_date)*10000) + (MONTH(p.payment_date)*100) + DAY(p.payment_date) AS date_id, CONCAT(s.first_name, ' ', s.last_name) AS staff_name, "payment" AS `transaction`, p.amount
+			FROM payment p
+			INNER JOIN rental r ON p.rental_id = r.rental_id
+			INNER JOIN inventory i ON r.inventory_id = i.inventory_id
+			INNER JOIN staff s ON r.staff_id = s.staff_id;
+	}
+	
+	dim_date:{
+		0. date_id
+		date, year, month_day, weekday_n
+		0.a. dim_semester
+		0.b. dim_quarter
+		0.c. dim_bimester
+		0.d. dim_month
+	}
+
+	dim_staff:{
+		a. staff_id
+		firts+secondName
+	}
+
+	dim_store:{
+		b. store_id
+		Nombre: sales_by_store.store
+		*address_id
+		
+		SELECT s.store_id, sv.store, s.address_id, FROM store
+	}
+
+	*dim_address:{
+		b.a. address_id
+		address.[city]city_id.[country]country_id.country
+		address.[city]city_id.city
+		address.location
+		
+		SELECT a.address_id, a.address, o.country, i.city, a.location FROM address a
+			INNER JOIN city i ON a.city_id = i.city_id
+			INNER JOIN country o ON i.country_id = o.country_id
+			ORDER BY a.address_id;
+	}
+	
+	dim_film:{
+		vista->film_list <>
+		c. film_id	<FID>
+		title,		<title>
+		cat U category_id	<category>
+		lang U language_id	<language>
+		rating U rating		<rating> enum('G','PG','PG-13','R','NC-17')
+		
+		SELECT film_id, title, category, language, rating FROM film_list;
+		SELECT f.film_id, f.title, c.name AS category, l.name AS language, f.rating
+			FROM film f
+			INNER JOIN film_category fc ON f.film_id = fc.film_id
+			INNER JOIN category c ON fc.category_id = c.category_id
+			INNER JOIN language l ON l.language_id = f.language_id;
+	}
+	
+	dim_customer:{
+		d. customer_id
+		customer.active
+		*address_id
+	}
+]}

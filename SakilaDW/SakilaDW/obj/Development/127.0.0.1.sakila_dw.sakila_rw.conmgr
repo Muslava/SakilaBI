@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="127.0.0.1.sakila_dw.sakila_rw"
+  DTS:DTSID="{A00612DA-B7DF-47F0-90B7-B87205C2572E}"
+  DTS:CreationName="ADO.NET:MySql.Data.MySqlClient.MySqlConnection, MySql.Data, Version=8.0.23.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="server=127.0.0.1;user id=sakila_rw;database=sakila_dw;port=3306;">
+      <DTS:Password
+        DTS:Name="password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAyK6usOpYIEuef3SISFLL+wAAAAACAAAAAAAQZgAAAAEAACAAAACzih26CA4TS6cwFDHx4Zq8nGaKBJMBP5R0LaE6N6h8FwAAAAAOgAAAAAIAACAAAACGNoUC6OmQa5o3bgP/HlsprwjhAHAz125RmwEZm0mSm4AAAABdCw8QAgDtDRsYT7xejCGrXZTq7GbcMaErb2eaI1ya86UxN38X+iJHa3jGNbhW3CxVsl+QaN762ACD0g/SOg8CcGfP9+llnkOdVLKijvLdqEI4pVTAebgGwPY7Hb9nehcxRhy9ncv3KDa+uxN2p4A0ONqn6AxNKKa3nuov0OZkdkAAAADurWglX2Arn5lZi4f5hkqtgeDEPMe9uGUh6sziuVndrUHxOEG0flaeSEa00dbScbMbI7LRCh3JdneY73pa1Y/T</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="SakilaDW_32_64bit_CODBC"
+  DTS:DTSID="{80ECC6B4-B6D8-47BC-A42E-0A54552D0A48}"
+  DTS:CreationName="ADO.NET:System.Data.Odbc.OdbcConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Dsn=SakilaDW_32/64bit_CODBC;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

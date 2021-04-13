@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="Sakila_32_64bit_CODBC.sakila_rw"
+  DTS:DTSID="{A50AA02E-B373-4A74-A0D4-F3DDB36EAC26}"
+  DTS:CreationName="ADO.NET:System.Data.Odbc.OdbcConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="uid=sakila_rw;Dsn=Sakila_32/64bit_CODBC;">
+      <DTS:Password
+        DTS:Name="pwd"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAyK6usOpYIEuef3SISFLL+wAAAAACAAAAAAAQZgAAAAEAACAAAACmEWbsA41W0DXy0iZSbB+4vNNfe2adHqq+TwkDqplJIwAAAAAOgAAAAAIAACAAAAA8nciDgC1uvQNESktRoSVHl674Gy45brbPtOpZyLwiz4AAAAC8gqG/VffF6aEaV946mDSQFl7fgBN+/dsyaK7RqGTD70lAJgYqIdgTQg/Ww1Y24apJs5IJEPaM1jJeVSwioDx/vBRXfOQS8NdTlNzVMJFyIcXWm//l0UhQVg+elCWLHgy/Bj5Lgx0zyfHI4y9cYdxh5ZvaFfudfdIKm6++6Cq5YEAAAACHDdXsPe0asYCufT3KYEqUxujzXXTFPNdgf2nUVIXvvLw/P6VCW4SXPFJuksF0Kxqt1gkLcYHaT9TQ039/J1Ob</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>
